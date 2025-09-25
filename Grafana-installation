@@ -1,25 +1,23 @@
-sudo rpm --import https://packages.grafana.com/gpg.key
-- copy these all lines and execute as one command
-- ------------------------------------------------------
-sudo tee /etc/yum.repos.d/grafana.repo <<EOF
-[grafana]
-name=grafana
-baseurl=https://packages.grafana.com/oss/rpm
-repo_gpgcheck=1
-enabled=1
-gpgcheck=1
-gpgkey=https://packages.grafana.com/gpg.key
-sslverify=1
-sslcacert=/etc/pki/tls/certs/ca-bundle.crt
-EOF
-----------------------------------------------
+# Install Grafana on Debian or Ubuntu
+
+sudo apt-get install -y apt-transport-https
+sudo apt-get install -y software-properties-common wget
+sudo wget -q -O /usr/share/keyrings/grafana.key 
+
+https://apt.grafana.com/gpg.key
 
 
-sudo yum install grafana -y
-sudo systemctl start grafana-server
-sudo systemctl enable grafana-server
-sudo systemctl status grafana-server
+Stable release
+echo "deb [signed-by=/usr/share/keyrings/grafana.key] https://apt.grafana.com stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
 
+Beta release
+echo "deb [signed-by=/usr/share/keyrings/grafana.key] https://apt.grafana.com beta main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
 
-- copy public ip and paste on broswer
-http://pub-ip:3000
+# Update the list of available packages
+sudo apt-get update
+
+# Install the latest OSS release:
+sudo apt-get install grafana
+
+#To start Grafana Server
+sudo /bin/systemctl status grafana-server
